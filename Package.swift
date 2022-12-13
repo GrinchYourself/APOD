@@ -7,16 +7,18 @@ let package = Package(
     name: "APOD",
     platforms: [.iOS(.v16)],
     products: [
-        .library(name: "APOD", targets: ["APOD"]),
+        .library(name: "RemoteStore", targets: ["RemoteStore"]),
     ],
     dependencies: [
     ],
     targets: [
+        //RemoteStore
         .target(
-            name: "APOD",
+            name: "RemoteStore",
             dependencies: []),
         .testTarget(
-            name: "APODTests",
-            dependencies: ["APOD"]),
+            name: "RemoteStoreTests",
+            dependencies: ["RemoteStore"],
+            resources: [.copy("Stub")])
     ]
 )
