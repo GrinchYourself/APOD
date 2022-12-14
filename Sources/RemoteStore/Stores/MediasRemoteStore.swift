@@ -47,7 +47,7 @@ public class MediasRemoteStore: MediasRemoteStoreProtocol {
     }
     
     public func getMedias(from startDate: Date, to endDate: Date) -> AnyPublisher<[Media], MediasRemoteStoreError> {
-        guard startDate < endDate else {
+        guard startDate <= endDate else {
             return Fail(error: MediasRemoteStoreError.invalidParameters).eraseToAnyPublisher()
         }
 

@@ -54,6 +54,28 @@ final class RemoteStoresTests: XCTestCase {
         wait(for: [expectation], timeout: 0.5)
     }
 
+    func testSuccessGetOneMedia() {
+        let dependencies = MockHTTPDataProvider(status: .oneMediaSuccess)
+        let remoteStore = MediasRemoteStore(httpDataProvider: dependencies)
+
+        let expectation = XCTestExpectation(description: "get One Media success")
+        let startDate = dateFormatter.date(from: "01/11/2022")!
+        let endDate = startDate
+
+        remoteStore.getMedias(from: startDate, to: endDate).sink { completion in
+            switch completion {
+            case .finished:
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failure not expected")
+            }
+        } receiveValue: { medias in
+            XCTAssertEqual(1, medias.count)
+        }.store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 0.5)
+    }
+
     func testFailureGetMediasListingBadParameters() {
         let dependencies = MockHTTPDataProvider(status: .mediasSuccess)
         let remoteStore = MediasRemoteStore(httpDataProvider: dependencies)
@@ -114,11 +136,13 @@ final class RemoteStoresTests: XCTestCase {
     class MockHTTPDataProvider: HTTPDataProvider {
         enum Status {
             case mediasSuccess
+            case oneMediaSuccess
             case mediasFailure
 
             var resource: String {
                 switch self {
                 case .mediasSuccess:  return "ListingMedias"
+                case .oneMediaSuccess: return "ListingOneMedia"
                 case .mediasFailure:  return "BadListingMedias"
                 }
             }
