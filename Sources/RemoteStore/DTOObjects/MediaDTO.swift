@@ -1,31 +1,45 @@
 //
-//  PictureDTO.swift
+//  MediaDTO.swift
 //  
 //
 //  Created by Grinch on 13/12/2022.
 //
 
 import Foundation
+import Domain
 
-public struct MediaDTO: Decodable {
+struct MediaDTO: Decodable, Media {
+
+    // MARK: Domain & Decodable properties
     let date: Date
     let explanation: String
-    let media: TypeDTO
     let title: String
     let url: String
     let hdUrl: String?
     let copyright: String?
 
+    // MARK: Decodable Properties
+    let mediaDTO: TypeDTO
+
     enum CodingKeys: String, CodingKey {
         case date
         case explanation
-        case media = "media_type"
+        case mediaDTO = "media_type"
         case title
         case url
         case hdUrl = "hdurl"
         case copyright
     }
 
+    // MARK: Domain
+    var media: Domain.MediaType {
+        switch mediaDTO {
+        case .video:
+            return .video
+        case .image:
+            return .image
+        }
+    }
 }
 
 enum TypeDTO: String, Decodable {

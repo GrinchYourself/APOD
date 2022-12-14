@@ -7,13 +7,9 @@
 
 import Foundation
 import Combine
+import Domain
 
-public enum MediasRemoteStoreError: Error {
-    case invalidParameters
-    case somethingWrong
-}
-
-public class MediasRemoteStore {
+public class MediasRemoteStore: MediasRemoteStoreProtocol {
 
     private enum K {
         static let apiKey = "api_key"
@@ -39,7 +35,7 @@ public class MediasRemoteStore {
         return urlRequest
     }()
 
-    var dateFormatter: DateFormatter = {
+    private var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         return dateFormatter
@@ -50,7 +46,7 @@ public class MediasRemoteStore {
         self.httpDataProvider = httpDataProvider
     }
     
-    public func getMedias(from startDate: Date, to endDate: Date) -> AnyPublisher<[MediaDTO], MediasRemoteStoreError> {
+    public func getMedias(from startDate: Date, to endDate: Date) -> AnyPublisher<[Media], MediasRemoteStoreError> {
         guard startDate < endDate else {
             return Fail(error: MediasRemoteStoreError.invalidParameters).eraseToAnyPublisher()
         }
@@ -60,12 +56,13 @@ public class MediasRemoteStore {
         return httpDataProvider.dataPublisher(for: urlRequest)
             .map(\.data)
             .decode(type: [MediaDTO].self, decoder: jsonDecoder)
+            .map { mediasDTO -> [Domain.Media] in mediasDTO }
             .mapError { error in MediasRemoteStoreError.somethingWrong }
             .eraseToAnyPublisher()
     }
 
     // MARK: Private methods
-    func addQueryItems(for startDate: Date, and endDate: Date) {
+    private func addQueryItems(for startDate: Date, and endDate: Date) {
         var queryItems = [URLQueryItem]()
         queryItems.append(URLQueryItem(name: K.apiKey, value: K.apiValue))
         queryItems.append(URLQueryItem(name: K.startDateKey, value: dateFormatter.string(from: startDate)))
