@@ -8,6 +8,7 @@ let package = Package(
     platforms: [.iOS(.v16)],
     products: [
         .library(name: "Domain", targets: ["Domain"]),
+        .library(name: "Repository", targets: ["Repository"]),
         .library(name: "RemoteStore", targets: ["RemoteStore"]),
     ],
     dependencies: [
@@ -15,6 +16,13 @@ let package = Package(
     targets: [
         //Domain
         .target(name: "Domain"),
+        //Repository
+        .target(
+            name: "Repository",
+            dependencies: ["Domain"]),
+        .testTarget(
+            name: "RepositoryTests",
+            dependencies: ["Repository"]),
         //RemoteStore
         .target(
             name: "RemoteStore",

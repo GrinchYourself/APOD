@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC98FA1C294A71F00028FA13 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1B294A71F00028FA13 /* Domain */; };
+		AC98FA1E294A71F00028FA13 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1D294A71F00028FA13 /* RemoteStore */; };
+		AC98FA20294A71F00028FA13 /* Repository in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1F294A71F00028FA13 /* Repository */; };
 		ACF563CA2947BFB6002679CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF563C92947BFB6002679CE /* AppDelegate.swift */; };
 		ACF563CE2947BFB6002679CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF563CD2947BFB6002679CE /* ViewController.swift */; };
 		ACF563D32947BFB7002679CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACF563D22947BFB7002679CE /* Assets.xcassets */; };
@@ -41,6 +44,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC98FA1E294A71F00028FA13 /* RemoteStore in Frameworks */,
+				AC98FA1C294A71F00028FA13 /* Domain in Frameworks */,
+				AC98FA20294A71F00028FA13 /* Repository in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +60,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AC98FA1A294A71F00028FA13 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ACF563BD2947BFB6002679CE = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +74,7 @@
 				ACF563C82947BFB6002679CE /* ApodApp */,
 				ACF563DF2947BFB7002679CE /* ApodAppTests */,
 				ACF563C72947BFB6002679CE /* Products */,
+				AC98FA1A294A71F00028FA13 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +123,11 @@
 			dependencies = (
 			);
 			name = ApodApp;
+			packageProductDependencies = (
+				AC98FA1B294A71F00028FA13 /* Domain */,
+				AC98FA1D294A71F00028FA13 /* RemoteStore */,
+				AC98FA1F294A71F00028FA13 /* Repository */,
+			);
 			productName = ApodApp;
 			productReference = ACF563C62947BFB6002679CE /* ApodApp.app */;
 			productType = "com.apple.product-type.application";
@@ -419,9 +438,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.grinchYourself.ApodAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ApodApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ApodApp";
 			};
 			name = Debug;
@@ -439,9 +461,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.grinchYourself.ApodAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ApodApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ApodApp";
 			};
 			name = Release;
@@ -477,6 +502,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AC98FA1B294A71F00028FA13 /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
+		AC98FA1D294A71F00028FA13 /* RemoteStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteStore;
+		};
+		AC98FA1F294A71F00028FA13 /* Repository */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Repository;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ACF563BE2947BFB6002679CE /* Project object */;
 }
