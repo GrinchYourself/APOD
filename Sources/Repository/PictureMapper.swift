@@ -19,7 +19,7 @@ struct PictureMapper: Picture {
 
     init?(_ media: Media) {
         guard media.media  == .image else { return nil }
-        self.id = ""
+        self.id = Self.makeIdentifier(from: media.url)
         self.date = media.date
         self.title = media.title
         self.explanation = media.explanation
@@ -27,6 +27,13 @@ struct PictureMapper: Picture {
         self.url = URLMapper(standard: URL(string: media.url),
                              high: URL(string: media.hdUrl ?? ""))
     }
+
+    private static func makeIdentifier(from url: String) -> String {
+        guard let name = url.split(separator: "/", omittingEmptySubsequences: true).last else { return "" }
+        guard let identifier = name.split(separator: ".").first else { return "" }
+        return String(identifier)
+    }
+
 }
 
 struct URLMapper: Domain.PicturesURL {
