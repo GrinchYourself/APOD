@@ -13,9 +13,14 @@ public class PicturesRepository: PicturesRepositoryProtocol {
 
     typealias Period = (startDate: Date, endDate: Date)
 
+    var period: Period?
+
     // MARK: Private properties
     private let mediasRemoteStore: MediasRemoteStoreProtocol
     private let calendar = Calendar.current
+
+    private var pictures = [PictureMapper]()
+    private var isRequesting = false
 
     // MARK: Init
     public init(mediasRemoteStore: MediasRemoteStoreProtocol) {
@@ -23,18 +28,32 @@ public class PicturesRepository: PicturesRepositoryProtocol {
     }
 
     // MARK: PicturesRepositoryProtocol
-    public func picturesFromLast(days: Int,
-                                 since date: Date = Date()) -> AnyPublisher<[Picture], PicturesRepositoryError> {
+    public func picturesFromLastDays(count: UInt,
+                                     since date: Date = Date()) -> AnyPublisher<[Picture], PicturesRepositoryError> {
 
-        guard let period = try? prepareStartAndEndDates(for: days, since: date) else {
-            return Fail(error: PicturesRepositoryError.invalidParameters).eraseToAnyPublisher()
-        }
-        return mediasRemoteStore
-            .getMedias(from: period.startDate, to: period.endDate)
-            .map { medias -> [Picture] in
-                medias.compactMap { media -> Picture? in PictureMapper(media) }
-            }.mapError(convert(_:))
+        initializeRequestIfNeeded()
+        preparePeriodForDays(count: count, since: date)
+
+        return filterPicturesFromMediaPublisher()
+            .flatMap(maxPublishers: .unlimited, { [weak self] requestPictures -> AnyPublisher<[Picture], PicturesRepositoryError> in
+                guard let self else {
+                    return Empty().setFailureType(to: PicturesRepositoryError.self).eraseToAnyPublisher()
+                }
+                return self.savePicturesAndCheckCount(requestPictures, count: count)
+            })
             .eraseToAnyPublisher()
+    }
+
+    func preparePeriodForDays(count: UInt, since date: Date) {
+        guard let startDate = calendar.date(byAdding: .day, value: -Int(count) + 1, to: date) else {
+            period = nil
+            return
+        }
+        guard startDate <= date else {
+            period = nil
+            return
+        }
+        period = (startDate: startDate, endDate: date)
     }
 
     // MARK: Private methods
@@ -45,13 +64,46 @@ public class PicturesRepository: PicturesRepositoryProtocol {
         }
     }
 
-    private func prepareStartAndEndDates(for days: Int, since date: Date) throws -> Period  {
-        guard let startDate = calendar.date(byAdding: .day, value: -days + 1, to: date) else {
-            throw PicturesRepositoryError.invalidParameters
+    private func initializeRequestIfNeeded() {
+
+        if !isRequesting {
+            isRequesting = true
+            pictures.removeAll()
         }
-        guard startDate <= date else {
-            throw PicturesRepositoryError.invalidParameters
+        
+    }
+
+    private func filterPicturesFromMediaPublisher() -> AnyPublisher<[PictureMapper], PicturesRepositoryError> {
+
+        guard let period else {
+            return Fail(error: PicturesRepositoryError.invalidParameters).eraseToAnyPublisher()
         }
-        return (startDate: startDate, endDate: date)
+
+        return mediasRemoteStore
+            .getMedias(from: period.startDate, to: period.endDate)
+            .map { medias -> [PictureMapper] in
+                medias.compactMap { media -> PictureMapper? in PictureMapper(media) }
+            }
+            .mapError(convert(_:))
+            .eraseToAnyPublisher()
+    }
+
+    private func savePicturesAndCheckCount(_ requestPictures: [PictureMapper],
+                                           count: UInt) -> AnyPublisher<[Picture], PicturesRepositoryError> {
+
+        pictures.append(contentsOf: requestPictures)
+        guard requestPictures.count != count else {
+            return Just(pictures).setFailureType(to: PicturesRepositoryError.self).eraseToAnyPublisher()
+        }
+        guard let period else {
+            return Fail(error: PicturesRepositoryError.invalidParameters).eraseToAnyPublisher()
+        }
+        guard let date = calendar.date(byAdding: .day, value: -1, to: period.startDate) else {
+            return Fail(error: PicturesRepositoryError.invalidParameters).eraseToAnyPublisher()
+        }
+
+        let leftPicturesCount = count - UInt(requestPictures.count)
+        return picturesFromLastDays(count: leftPicturesCount, since: date)
+
     }
 }

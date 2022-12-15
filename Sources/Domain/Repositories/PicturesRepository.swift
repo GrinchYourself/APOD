@@ -18,5 +18,5 @@ public protocol HasPicturesRepository {
 }
 
 public protocol PicturesRepositoryProtocol {
-    func picturesFromLast(days: Int, since: Date) -> AnyPublisher<[Picture], PicturesRepositoryError>
+    func picturesFromLastDays(count: UInt, since: Date) -> AnyPublisher<[Picture], PicturesRepositoryError>
 }
