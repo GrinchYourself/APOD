@@ -27,14 +27,6 @@ public class MediasRemoteStore: MediasRemoteStoreProtocol {
         return jsonDecoder
     }
 
-    private var urlRequest: URLRequest = {
-        let endpoint = URL(string: "https://api.nasa.gov/planetary/apod")!
-        var urlRequest = URLRequest(url: endpoint)
-        urlRequest.httpMethod = "GET"
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        return urlRequest
-    }()
-
     private var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
@@ -51,7 +43,8 @@ public class MediasRemoteStore: MediasRemoteStoreProtocol {
             return Fail(error: MediasRemoteStoreError.invalidParameters).eraseToAnyPublisher()
         }
 
-        addQueryItems(for: startDate, and: endDate)
+        var urlRequest = prepareURLRequest()
+        urlRequest.url?.append(queryItems: prepareQueryItems(for: startDate, and: endDate))
 
         return httpDataProvider.dataPublisher(for: urlRequest)
             .map(\.data)
@@ -62,13 +55,25 @@ public class MediasRemoteStore: MediasRemoteStoreProtocol {
     }
 
     // MARK: Private methods
-    private func addQueryItems(for startDate: Date, and endDate: Date) {
+    private func prepareQueryItems(for startDate: Date, and endDate: Date) -> [URLQueryItem] {
+
         var queryItems = [URLQueryItem]()
         queryItems.append(URLQueryItem(name: K.apiKey, value: K.apiValue))
         queryItems.append(URLQueryItem(name: K.startDateKey, value: dateFormatter.string(from: startDate)))
         queryItems.append(URLQueryItem(name: K.endDateKey, value: dateFormatter.string(from: endDate)))
 
-        urlRequest.url?.append(queryItems: queryItems)
+        return queryItems
     }
+
+    private func prepareURLRequest() -> URLRequest {
+
+        let endpoint = URL(string: "https://api.nasa.gov/planetary/apod")!
+        var urlRequest = URLRequest(url: endpoint)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        return urlRequest
+
+    }
+
 }
 
