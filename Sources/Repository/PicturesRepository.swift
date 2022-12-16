@@ -35,12 +35,13 @@ public class PicturesRepository: PicturesRepositoryProtocol {
         preparePeriodForDays(count: count, since: date)
 
         return filterPicturesFromMediaPublisher()
-            .flatMap(maxPublishers: .unlimited, { [weak self] requestPictures -> AnyPublisher<[Picture], PicturesRepositoryError> in
+            .handleEvents(receiveOutput: save(pictures:))
+            .flatMap { [weak self] requestPictures -> AnyPublisher<[Picture], PicturesRepositoryError> in
                 guard let self else {
                     return Empty().setFailureType(to: PicturesRepositoryError.self).eraseToAnyPublisher()
                 }
-                return self.savePicturesAndCheckCount(requestPictures, count: count)
-            })
+                return self.checkPicturesCount(requestPictures, count: count)
+            }
             .eraseToAnyPublisher()
     }
 
@@ -88,10 +89,9 @@ public class PicturesRepository: PicturesRepositoryProtocol {
             .eraseToAnyPublisher()
     }
 
-    private func savePicturesAndCheckCount(_ requestPictures: [PictureMapper],
-                                           count: UInt) -> AnyPublisher<[Picture], PicturesRepositoryError> {
+    private func checkPicturesCount(_ requestPictures: [PictureMapper],
+                                    count: UInt) -> AnyPublisher<[Picture], PicturesRepositoryError> {
 
-        pictures.append(contentsOf: requestPictures)
         guard requestPictures.count != count else {
             return Just(pictures).setFailureType(to: PicturesRepositoryError.self).eraseToAnyPublisher()
         }
@@ -106,4 +106,9 @@ public class PicturesRepository: PicturesRepositoryProtocol {
         return picturesFromLastDays(count: leftPicturesCount, since: date)
 
     }
+
+    private func save(pictures requestPictures: [PictureMapper]) {
+        pictures.append(contentsOf: requestPictures)
+    }
+
 }
