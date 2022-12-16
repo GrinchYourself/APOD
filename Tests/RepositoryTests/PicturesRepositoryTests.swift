@@ -69,6 +69,9 @@ final class PicturesRepositoryTests: XCTestCase {
             }
         } receiveValue: { pictures in
             XCTAssertEqual(3, pictures.count)
+            //Check order of pictures
+            XCTAssertTrue(pictures[0].date > pictures[1].date)
+            XCTAssertTrue(pictures[1].date > pictures[2].date)
         }.store(in: &cancellables)
 
         wait(for: [expectation], timeout: 0.5)

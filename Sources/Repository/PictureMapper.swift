@@ -36,6 +36,20 @@ struct PictureMapper: Picture {
 
 }
 
+extension PictureMapper: Comparable {
+    static func < (lhs: PictureMapper, rhs: PictureMapper) -> Bool {
+        lhs.date < rhs.date
+    }
+
+    static func == (lhs: PictureMapper, rhs: PictureMapper) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    static func > (lhs: PictureMapper, rhs: PictureMapper) -> Bool {
+        lhs.date > rhs.date
+    }
+}
+
 struct URLMapper: Domain.PicturesURL {
     let standard: URL?
     let high: URL?

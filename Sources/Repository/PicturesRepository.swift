@@ -93,7 +93,8 @@ public class PicturesRepository: PicturesRepositoryProtocol {
                                     count: UInt) -> AnyPublisher<[Picture], PicturesRepositoryError> {
 
         guard requestPictures.count != count else {
-            return Just(pictures).setFailureType(to: PicturesRepositoryError.self).eraseToAnyPublisher()
+            let sortedPictures = pictures.sorted(by: >)
+            return Just(sortedPictures).setFailureType(to: PicturesRepositoryError.self).eraseToAnyPublisher()
         }
         guard let period else {
             return Fail(error: PicturesRepositoryError.invalidParameters).eraseToAnyPublisher()
