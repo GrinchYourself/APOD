@@ -10,6 +10,7 @@
 		AC98FA1C294A71F00028FA13 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1B294A71F00028FA13 /* Domain */; };
 		AC98FA1E294A71F00028FA13 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1D294A71F00028FA13 /* RemoteStore */; };
 		AC98FA20294A71F00028FA13 /* Repository in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1F294A71F00028FA13 /* Repository */; };
+		AC98FA22294D1A4C0028FA13 /* Screen in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA21294D1A4C0028FA13 /* Screen */; };
 		ACF563CA2947BFB6002679CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF563C92947BFB6002679CE /* AppDelegate.swift */; };
 		ACF563CE2947BFB6002679CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF563CD2947BFB6002679CE /* ViewController.swift */; };
 		ACF563D32947BFB7002679CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACF563D22947BFB7002679CE /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 			files = (
 				AC98FA1E294A71F00028FA13 /* RemoteStore in Frameworks */,
 				AC98FA1C294A71F00028FA13 /* Domain in Frameworks */,
+				AC98FA22294D1A4C0028FA13 /* Screen in Frameworks */,
 				AC98FA20294A71F00028FA13 /* Repository in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +129,7 @@
 				AC98FA1B294A71F00028FA13 /* Domain */,
 				AC98FA1D294A71F00028FA13 /* RemoteStore */,
 				AC98FA1F294A71F00028FA13 /* Repository */,
+				AC98FA21294D1A4C0028FA13 /* Screen */,
 			);
 			productName = ApodApp;
 			productReference = ACF563C62947BFB6002679CE /* ApodApp.app */;
@@ -515,6 +518,10 @@
 		AC98FA1F294A71F00028FA13 /* Repository */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Repository;
+		};
+		AC98FA21294D1A4C0028FA13 /* Screen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Screen;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
