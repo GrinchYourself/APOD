@@ -1,22 +1,14 @@
 //
 //  ImageLoader.swift
-//  PaperClipApp
 //
-//  Created by Grinch on 13/11/2022.
+//
+//  Created by Grinch on 16/12/2022.
 //
 
 import Foundation
 import Combine
 import UIKit
 import Domain
-
-public enum ImageLoadingError: Error {
-    case somethingWrong
-}
-
-public protocol ImageLoading {
-    func loadImage(for url: URL) -> AnyPublisher<UIImage, ImageLoadingError>
-}
 
 public class ImageLoader: ImageLoading {
 
