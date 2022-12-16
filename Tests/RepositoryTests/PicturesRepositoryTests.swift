@@ -30,28 +30,49 @@ final class PicturesRepositoryTests: XCTestCase {
     }
 
     // MARK: Get Pictures
-    //TODO: To fix
-//    func testSuccessGetPicturesListing() {
-//        let remoteStore = MockMediasRemoteStoreProtocol()
-//
-//        let picturesRepository = PicturesRepository(mediasRemoteStore: remoteStore)
-//
-//        let expectation = XCTestExpectation(description: "get Listing Pictures success")
-//        let date = dateFormatter.date(from: "12/12/2022")!
-//
-//        picturesRepository.picturesFromLastDays(count: 5, since: date).sink { completion in
-//            switch completion {
-//            case .finished:
-//                expectation.fulfill()
-//            case .failure:
-//                XCTFail("Failure not expected")
-//            }
-//        } receiveValue: { pictures in
-//            XCTAssertEqual(3, pictures.count)
-//        }.store(in: &cancellables)
-//
-//        wait(for: [expectation], timeout: 0.5)
-//    }
+    func testSuccessGetPicturesListing() {
+        let remoteStore = MockMediasRemoteStoreProtocol()
+
+        let picturesRepository = PicturesRepository(mediasRemoteStore: remoteStore)
+
+        let expectation = XCTestExpectation(description: "get Listing Pictures success")
+        let date = dateFormatter.date(from: "12/12/2022")!
+
+        picturesRepository.picturesFromLastDays(count: 2, since: date).sink { completion in
+            switch completion {
+            case .finished:
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failure not expected")
+            }
+        } receiveValue: { pictures in
+            XCTAssertEqual(2, pictures.count)
+        }.store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 0.5)
+    }
+
+    func testSuccessGetPicturesListingWithRecursiveCalls() {
+        let remoteStore = MockMediasRemoteStoreProtocol()
+
+        let picturesRepository = PicturesRepository(mediasRemoteStore: remoteStore)
+
+        let expectation = XCTestExpectation(description: "get Listing Pictures success with recursive calls")
+        let date = dateFormatter.date(from: "12/12/2022")!
+
+        picturesRepository.picturesFromLastDays(count: 3, since: date).sink { completion in
+            switch completion {
+            case .finished:
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Failure not expected")
+            }
+        } receiveValue: { pictures in
+            XCTAssertEqual(3, pictures.count)
+        }.store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 0.5)
+    }
 
     func testFailureGetPicturesListingInvalidParametersFromRemoteStore() {
         let remoteStore = MockMediasRemoteStoreProtocol(error: .invalidParameters)
@@ -164,15 +185,27 @@ final class PicturesRepositoryTests: XCTestCase {
     class MockMediasRemoteStoreProtocol: MediasRemoteStoreProtocol {
 
         let error: MediasRemoteStoreError?
+        var requestCount = 0
+        let mockMediaRequest1 = Array(Mocks().medias[0...2])
+        let mockMediaRequest2 = [Mocks().medias[3]]
+        let mockMediaRequest3 = [Mocks().medias[4]]
 
         init(error: MediasRemoteStoreError? = nil) {
             self.error = error
         }
 
         func getMedias(from startDate: Date, to endDate: Date) -> AnyPublisher<[Domain.Media], Domain.MediasRemoteStoreError> {
+            requestCount += 1
             switch error {
             case .none:
-                return Just(Mocks().medias).setFailureType(to: MediasRemoteStoreError.self).eraseToAnyPublisher()
+                switch requestCount {
+                case 1:
+                    return Just(mockMediaRequest1).setFailureType(to: MediasRemoteStoreError.self).eraseToAnyPublisher()
+                case 2:
+                    return Just(mockMediaRequest2).setFailureType(to: MediasRemoteStoreError.self).eraseToAnyPublisher()
+                default:
+                    return Just(mockMediaRequest3).setFailureType(to: MediasRemoteStoreError.self).eraseToAnyPublisher()
+                }
             case .some(let mediasRemoteStoreError):
                 return Fail(error: mediasRemoteStoreError).eraseToAnyPublisher()
             }
