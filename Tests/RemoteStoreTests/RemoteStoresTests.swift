@@ -8,6 +8,7 @@
 import XCTest
 import Combine
 import Foundation
+import Domain
 @testable import RemoteStore
 
 final class RemoteStoresTests: XCTestCase {
@@ -163,6 +164,11 @@ final class RemoteStoresTests: XCTestCase {
             let data = try! Data(contentsOf: url)
             let response = URLResponse()
             return Just((data: data, response: response)).setFailureType(to: URLError.self).eraseToAnyPublisher()
+        }
+
+        // Not used
+        func dataPublisher(for url: URL) -> AnyPublisher<HTTPResponse, URLError> {
+            Empty().setFailureType(to: URLError.self).eraseToAnyPublisher()
         }
 
     }
