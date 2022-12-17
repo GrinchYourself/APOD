@@ -18,4 +18,6 @@ public enum Color {
 
     public static let blue = UIColor(named: "Blue", in: Bundle.module, compatibleWith: nil)!
 
+    public static let text = UIColor.label
+
 }
