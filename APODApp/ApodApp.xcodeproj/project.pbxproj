@@ -11,8 +11,10 @@
 		AC98FA1E294A71F00028FA13 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1D294A71F00028FA13 /* RemoteStore */; };
 		AC98FA20294A71F00028FA13 /* Repository in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA1F294A71F00028FA13 /* Repository */; };
 		AC98FA22294D1A4C0028FA13 /* Screen in Frameworks */ = {isa = PBXBuildFile; productRef = AC98FA21294D1A4C0028FA13 /* Screen */; };
+		AC98FA24294DDB090028FA13 /* MainDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98FA23294DDB090028FA13 /* MainDependencies.swift */; };
+		AC98FA27294DDC3B0028FA13 /* NavigationControllerAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98FA26294DDC3B0028FA13 /* NavigationControllerAppearance.swift */; };
+		AC98FA2B294DDD3F0028FA13 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98FA2A294DDD3F0028FA13 /* Coordinator.swift */; };
 		ACF563CA2947BFB6002679CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF563C92947BFB6002679CE /* AppDelegate.swift */; };
-		ACF563CE2947BFB6002679CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF563CD2947BFB6002679CE /* ViewController.swift */; };
 		ACF563D32947BFB7002679CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACF563D22947BFB7002679CE /* Assets.xcassets */; };
 		ACF563D62947BFB7002679CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACF563D42947BFB7002679CE /* LaunchScreen.storyboard */; };
 		ACF563E12947BFB7002679CE /* ApodAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF563E02947BFB7002679CE /* ApodAppTests.swift */; };
@@ -29,10 +31,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AC98FA23294DDB090028FA13 /* MainDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDependencies.swift; sourceTree = "<group>"; };
+		AC98FA26294DDC3B0028FA13 /* NavigationControllerAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerAppearance.swift; sourceTree = "<group>"; };
+		AC98FA2A294DDD3F0028FA13 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		ACBBFB822947C42600245731 /* APOD */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = APOD; path = ..; sourceTree = "<group>"; };
 		ACF563C62947BFB6002679CE /* ApodApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ApodApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACF563C92947BFB6002679CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ACF563CD2947BFB6002679CE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		ACF563D22947BFB7002679CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ACF563D52947BFB7002679CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ACF563D72947BFB7002679CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -69,6 +73,30 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AC98FA25294DDC110028FA13 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				AC98FA26294DDC3B0028FA13 /* NavigationControllerAppearance.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		AC98FA28294DDCFD0028FA13 /* MainDependencies */ = {
+			isa = PBXGroup;
+			children = (
+				AC98FA23294DDB090028FA13 /* MainDependencies.swift */,
+			);
+			path = MainDependencies;
+			sourceTree = "<group>";
+		};
+		AC98FA29294DDD260028FA13 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				AC98FA2A294DDD3F0028FA13 /* Coordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		ACF563BD2947BFB6002679CE = {
 			isa = PBXGroup;
 			children = (
@@ -93,7 +121,9 @@
 			isa = PBXGroup;
 			children = (
 				ACF563C92947BFB6002679CE /* AppDelegate.swift */,
-				ACF563CD2947BFB6002679CE /* ViewController.swift */,
+				AC98FA25294DDC110028FA13 /* Helpers */,
+				AC98FA29294DDD260028FA13 /* Coordinator */,
+				AC98FA28294DDCFD0028FA13 /* MainDependencies */,
 				ACF563D22947BFB7002679CE /* Assets.xcassets */,
 				ACF563D42947BFB7002679CE /* LaunchScreen.storyboard */,
 				ACF563D72947BFB7002679CE /* Info.plist */,
@@ -215,8 +245,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACF563CE2947BFB6002679CE /* ViewController.swift in Sources */,
 				ACF563CA2947BFB6002679CE /* AppDelegate.swift in Sources */,
+				AC98FA2B294DDD3F0028FA13 /* Coordinator.swift in Sources */,
+				AC98FA24294DDB090028FA13 /* MainDependencies.swift in Sources */,
+				AC98FA27294DDC3B0028FA13 /* NavigationControllerAppearance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
