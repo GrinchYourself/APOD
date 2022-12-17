@@ -10,3 +10,7 @@ import Foundation
 public protocol ListingPicturesFlow: AnyObject {
     func showPictureDetail(id: String)
 }
+
+public protocol PictureDetailFlow: AnyObject {
+    func showHDImage(url: URL)
+}
