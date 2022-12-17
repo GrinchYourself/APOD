@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Domain
 import ListingPictures
+import PictureDetail
 
 public protocol Coordinator {
     var navigationController : UINavigationController { get set }
@@ -41,7 +42,16 @@ class MainCoordinator: Coordinator {
 extension MainCoordinator: ListingPicturesFlow {
 
     func showPictureDetail(id: String) {
-        print("user wants to show picture detail: \(id)")
+        let pictureDetailVC = PictureDetailViewController(dependencies: dependencies, flow: self, pictureId: id)
+        navigationController.pushViewController(pictureDetailVC, animated: true)
+    }
+
+}
+
+extension MainCoordinator: PictureDetailFlow {
+
+    func showHDImage(url: URL) {
+        print(url)
     }
 
 }
