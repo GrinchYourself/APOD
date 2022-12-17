@@ -10,13 +10,17 @@ let package = Package(
         .library(name: "Domain", targets: ["Domain"]),
         .library(name: "Repository", targets: ["Repository"]),
         .library(name: "RemoteStore", targets: ["RemoteStore"]),
-        .library(name: "Screen", targets: ["ListingPictures"])
+        .library(name: "Screen", targets: ["ListingPictures"]),
+        .library(name: "DesignSystem", targets: ["DesignSystem"])
     ],
     dependencies: [
     ],
     targets: [
         //Domain
         .target(name: "Domain"),
+        // DesignSytem
+        .target(name: "DesignSystem",
+                resources: [.copy("Media.xcassets")]),
         //Repository
         .target(
             name: "Repository",
@@ -34,8 +38,9 @@ let package = Package(
             resources: [.copy("Stub")]),
         //ListingPictures
         .target(name: "ListingPictures",
-                dependencies: ["Domain"]),
+                dependencies: ["Domain",
+                               "DesignSystem"]),
         .testTarget(name: "ListingPicturesTests",
-                   dependencies: ["ListingPictures"])
+                    dependencies: ["ListingPictures"])
     ]
 )
