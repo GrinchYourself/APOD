@@ -8,11 +8,11 @@
 import UIKit
 import Combine
 import Domain
+import DesignSystem
 
 public class ListingPicturesViewController: UIViewController {
 
     public typealias Dependencies = HasPicturesRepository & HasImageLoader
-    public typealias NavigationFlow = String
 
     // MARK: Enum
     enum TableViewSection: Hashable {
@@ -39,16 +39,16 @@ public class ListingPicturesViewController: UIViewController {
 
     // MARK: Private properties
     private let viewModel: ListingPicturesViewModeling
-//    private weak var flow: MYFlow?
+    private weak var flow: ListingPicturesFlow?
     private var subscriptions = Set<AnyCancellable>()
     private var fetchCancellable: AnyCancellable?
     private let imageLoader: ImageLoading
 
     // MARK: Init
-    public init(dependencies: Dependencies, flow: NavigationFlow?) {
+    public init(dependencies: Dependencies, flow: ListingPicturesFlow?) {
         self.viewModel = ListingPicturesViewModel(dependencies: dependencies)
         self.imageLoader = dependencies.imageLoader
-//        self.flow = flow
+        self.flow = flow
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -60,7 +60,7 @@ public class ListingPicturesViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         title = "APOD"
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = Color.background
 
         registerHandlers()
 
@@ -99,7 +99,7 @@ public class ListingPicturesViewController: UIViewController {
         tableView.delegate = self
         tableView.register(PictureThumbnailTableViewCell.self, forCellReuseIdentifier: K.cellIdentifier)
         tableView.separatorStyle = .singleLine
-        tableView.separatorColor = .label
+        tableView.separatorColor = Color.secondary
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -135,7 +135,7 @@ extension ListingPicturesViewController: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let pictureId = tableViewDataSource.itemIdentifier(for: indexPath)?.id else { return }
-//        flow?.showAdDetails(itemIdentifier)
+        flow?.showPictureDetail(id: pictureId)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 

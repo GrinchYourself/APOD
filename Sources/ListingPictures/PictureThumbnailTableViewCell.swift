@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import Domain
+import DesignSystem
 
 class PictureThumbnailTableViewCell: UITableViewCell {
 
@@ -20,7 +21,7 @@ class PictureThumbnailTableViewCell: UITableViewCell {
 
     let pictureImageView: UIImageView = {
         var imageView = UIImageView(image: UIImage(systemName: "photo"))
-        imageView.tintColor = .systemGray5
+        imageView.tintColor = Color.secondary
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = K.cornerRadius
         imageView.clipsToBounds = true
@@ -31,7 +32,7 @@ class PictureThumbnailTableViewCell: UITableViewCell {
     let dateLabel: UILabel = {
         let label = UILabel(frame: CGRect.zero)
         label.font = UIFont.preferredFont(forTextStyle: .title3)
-        label.textColor = .label
+        label.textColor = Color.primary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,7 +43,7 @@ class PictureThumbnailTableViewCell: UITableViewCell {
     // MARK: Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .systemGray5
+        contentView.backgroundColor = Color.blue
         applyConstraints()
     }
 
