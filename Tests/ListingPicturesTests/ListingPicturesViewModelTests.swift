@@ -108,5 +108,9 @@ final class ListingPicturesViewModelTests: XCTestCase {
                 return Fail(error: PicturesRepositoryError.somethingWrong).eraseToAnyPublisher()
             }
         }
+
+        // Not used
+        func picture(id: String) throws -> Domain.Picture { throw PicturesRepositoryError.unknownPicture }
+
     }
 }

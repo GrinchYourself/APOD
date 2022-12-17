@@ -45,6 +45,14 @@ public class PicturesRepository: PicturesRepositoryProtocol {
             .eraseToAnyPublisher()
     }
 
+    public func picture(id: String) throws -> Picture {
+        guard let picture = pictures.first(where: { $0.id == id }) else {
+            throw PicturesRepositoryError.unknownPicture
+        }
+        return picture
+    }
+
+    // MARK: Internal methods
     func preparePeriodForDays(count: UInt, since date: Date) {
         guard let startDate = calendar.date(byAdding: .day, value: -Int(count) + 1, to: date) else {
             period = nil

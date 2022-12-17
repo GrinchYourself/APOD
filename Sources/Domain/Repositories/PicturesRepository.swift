@@ -11,6 +11,7 @@ import Combine
 public enum PicturesRepositoryError: Error {
     case invalidParameters
     case somethingWrong
+    case unknownPicture
 }
 
 public protocol HasPicturesRepository {
@@ -19,4 +20,5 @@ public protocol HasPicturesRepository {
 
 public protocol PicturesRepositoryProtocol {
     func picturesFromLastDays(count: UInt, since: Date) -> AnyPublisher<[Picture], PicturesRepositoryError>
+    func picture(id: String) throws -> Picture
 }

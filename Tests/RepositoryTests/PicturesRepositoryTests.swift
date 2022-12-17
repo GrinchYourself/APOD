@@ -96,6 +96,8 @@ final class PicturesRepositoryTests: XCTestCase {
                     expectation.fulfill()
                 case .somethingWrong:
                     XCTFail("somethingWrong error not expected")
+                case .unknownPicture:
+                    XCTFail("unknownPicture error not expected")
                 }
             }
         } receiveValue: { _ in
@@ -124,6 +126,8 @@ final class PicturesRepositoryTests: XCTestCase {
                     XCTFail("invalidParameters error not expected")
                 case .somethingWrong:
                     expectation.fulfill()
+                case .unknownPicture:
+                    XCTFail("unknownPicture error not expected")
                 }
             }
         } receiveValue: { _ in
