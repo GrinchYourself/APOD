@@ -10,7 +10,8 @@ let package = Package(
         .library(name: "Domain", targets: ["Domain"]),
         .library(name: "Repository", targets: ["Repository"]),
         .library(name: "RemoteStore", targets: ["RemoteStore"]),
-        .library(name: "Screen", targets: ["ListingPictures"]),
+        .library(name: "Screen", targets: ["ListingPictures",
+                                           "PictureDetail"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"])
     ],
     dependencies: [
@@ -41,6 +42,14 @@ let package = Package(
                 dependencies: ["Domain",
                                "DesignSystem"]),
         .testTarget(name: "ListingPicturesTests",
-                    dependencies: ["ListingPictures"])
+                    dependencies: ["ListingPictures"]),
+        //PictureDetail
+        .target(name: "PictureDetail",
+                dependencies: ["Domain",
+                               "DesignSystem"]),
+        .testTarget(
+            name: "PictureDetailTests",
+            dependencies: ["PictureDetail"])
     ]
+
 )
