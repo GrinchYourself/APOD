@@ -10,6 +10,7 @@ import UIKit
 import Domain
 import ListingPictures
 import PictureDetail
+import HighDefinitionPicture
 
 public protocol Coordinator {
     var navigationController : UINavigationController { get set }
@@ -51,7 +52,22 @@ extension MainCoordinator: ListingPicturesFlow {
 extension MainCoordinator: PictureDetailFlow {
 
     func showHDImage(url: URL) {
-        print(url)
+
+        let hdPictureViewController = HighDefinitionPictureViewController(dependencies: dependencies,
+                                                                               flow: self,
+                                                                               pictureURL: url)
+        let navigationVC = MainNavigationController(rootViewController: hdPictureViewController)
+
+        navigationController.present(navigationVC, animated: true)
+
+    }
+
+}
+
+extension MainCoordinator: HighDefinitionFlow {
+
+    func closeViewer() {
+        navigationController.dismiss(animated: true)
     }
 
 }
