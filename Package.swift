@@ -11,7 +11,8 @@ let package = Package(
         .library(name: "Repository", targets: ["Repository"]),
         .library(name: "RemoteStore", targets: ["RemoteStore"]),
         .library(name: "Screen", targets: ["ListingPictures",
-                                           "PictureDetail"]),
+                                           "PictureDetail",
+                                           "HighDefinitionPicture"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"])
     ],
     dependencies: [
@@ -49,7 +50,11 @@ let package = Package(
                                "DesignSystem"]),
         .testTarget(
             name: "PictureDetailTests",
-            dependencies: ["PictureDetail"])
+            dependencies: ["PictureDetail"]),
+        //HighDefinitionPicture
+        .target(name: "HighDefinitionPicture",
+                dependencies: ["Domain",
+                               "DesignSystem"])
     ]
 
 )
