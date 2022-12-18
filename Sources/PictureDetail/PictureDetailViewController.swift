@@ -31,6 +31,11 @@ public class PictureDetailViewController: UIViewController {
         return buttonItem
     }()
 
+    private lazy var imageTapGesture: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(hdButtonPressed))
+        return gesture
+    }()
+
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +48,7 @@ public class PictureDetailViewController: UIViewController {
         return contentView
     }()
 
-    private let pictureImageView: UIImageView = {
+    private lazy var pictureImageView: UIImageView = {
         var imageView = UIImageView(image: UIImage(systemName: "photo"))
         imageView.backgroundColor = Color.blue
         imageView.tintColor = Color.secondary
@@ -51,6 +56,8 @@ public class PictureDetailViewController: UIViewController {
         imageView.layer.cornerRadius = K.cornerRadius
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.addGestureRecognizer(imageTapGesture)
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
 
