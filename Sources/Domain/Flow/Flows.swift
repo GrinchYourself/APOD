@@ -14,3 +14,7 @@ public protocol ListingPicturesFlow: AnyObject {
 public protocol PictureDetailFlow: AnyObject {
     func showHDImage(url: URL)
 }
+
+public protocol HighDefinitionFlow: AnyObject {
+    func closeViewer()
+}
