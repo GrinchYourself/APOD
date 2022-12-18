@@ -21,6 +21,7 @@ public class ListingPicturesViewController: UIViewController {
 
     enum K {
         static let cellIdentifier = "PictureThumbnailTableViewCell"
+        static let logoSize: CGFloat = 256
     }
 
     // MARK: UI
@@ -36,6 +37,27 @@ public class ListingPicturesViewController: UIViewController {
             return cell
         }
     }()
+
+    private var loadingView: UIView {
+        let view = UIView()
+        let imageView = UIImageView(image: Image.logo)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let label = UILabel()
+        label.textAlignment = .center
+        label.text = "Chargement ..."
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        view.addSubview(label)
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: K.logoSize),
+            imageView.heightAnchor.constraint(equalToConstant: K.logoSize),
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.topAnchor.constraint(equalTo: imageView.topAnchor)
+        ])
+        return view
+    }
 
     // MARK: Private properties
     private let viewModel: ListingPicturesViewModeling
@@ -60,7 +82,6 @@ public class ListingPicturesViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         title = "APOD"
-        view.backgroundColor = Color.background
 
         registerHandlers()
 
@@ -74,8 +95,9 @@ public class ListingPicturesViewController: UIViewController {
         viewModel.picturesListPublisher
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] adItems in
-                self?.reloadItems(adItems)
+            .sink { [weak self] pictures in
+                self?.loadingView.isHidden = true
+                self?.reloadItems(pictures)
             }.store(in: &subscriptions)
 
         viewModel.fetchStatePublisher
@@ -83,7 +105,10 @@ public class ListingPicturesViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 switch state {
-                case .error: self?.showError()
+                case .error:
+                    self?.showError()
+                    self?.reloadItems([])
+                    self?.loadingView.isHidden = false
                 default: break
                 }
             }.store(in: &subscriptions)
@@ -100,6 +125,8 @@ public class ListingPicturesViewController: UIViewController {
         tableView.register(PictureThumbnailTableViewCell.self, forCellReuseIdentifier: K.cellIdentifier)
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = Color.secondary
+        tableView.backgroundView = loadingView
+        tableView.backgroundColor = Color.background
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -107,8 +134,9 @@ public class ListingPicturesViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+
     }
 
     private func reloadItems(_ pictures: [PictureThumbnail]) {
